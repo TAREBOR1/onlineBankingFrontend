@@ -68,7 +68,7 @@ export function Header() {
 
         {/* Notifications */}
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger >
             <Button variant="ghost" size="icon" className="relative rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
               <Bell className="h-5 w-5 text-slate-600 dark:text-slate-300" />
               {unreadCount > 0 && (
