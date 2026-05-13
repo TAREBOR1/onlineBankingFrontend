@@ -92,7 +92,7 @@ export default function SmartProfilePage() {
               <div className="flex items-center justify-between mb-10">
                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">Parameters</h3>
                  <Dialog>
-                    <DialogTrigger asChild>
+                    <DialogTrigger >
                       <Button onClick={() => setPhone(user?.phone || "")} className="cursor-pointer rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 h-11 text-xs">
                         Update Details
                       </Button>
