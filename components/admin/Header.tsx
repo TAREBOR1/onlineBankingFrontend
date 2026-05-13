@@ -6,7 +6,6 @@ import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,7 +29,7 @@ export function Header() {
 
   const recentNotifications = notifications.slice(0, 5);
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-6">
+    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 px-4 md:px-6">
       <div className="flex items-center gap-4">
         {/* Mobile menu button - only shows on mobile */}
         <Button
@@ -69,7 +68,7 @@ export function Header() {
 
         {/* Notifications */}
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger >
         <Button variant="ghost" size="icon" className="relative rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
           <Bell className="h-5 w-5 text-slate-600 dark:text-slate-300" />
           {unreadCount > 0 && (
@@ -90,7 +89,7 @@ export function Header() {
           )}
         </div>
 
-        <div className="max-h-[380px] overflow-y-auto">
+        <div className="max-h-95 overflow-y-auto">
           {isLoading ? (
             <div className="p-8 text-center text-xs text-muted-foreground animate-pulse">
               Loading alerts...
@@ -139,11 +138,11 @@ export function Header() {
     
         {/* User Menu */}
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger>
             <Button variant="ghost" className="flex items-center gap-2 rounded-lg px-2 hover:bg-muted">
               <Avatar className="h-8 w-8">
                 {/* <AvatarImage src={`https://avatar.vercel.sh/${user.email}`} /> */}
-                <AvatarFallback className="bg-gradient-to-br from-blue-500 to-indigo-500 text-white">
+                <AvatarFallback className="bg-linear-to-br from-blue-500 to-indigo-500 text-white">
                  JD
                
                 </AvatarFallback>

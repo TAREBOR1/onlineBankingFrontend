@@ -11,10 +11,29 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { useAdminWallets } from "@/hooks/adminWalletHooks";
 import toast from "react-hot-toast";
 
+
+
+type FormData = {
+  currency: string;
+  symbol: string;
+  network: any;
+  address: string;
+  logoUrl: string;
+};
+
+const initialFormData: FormData = {
+  currency: "",
+  symbol: "",
+  network: "",
+  address: "",
+  logoUrl: "",
+};
+
+
 export default function AdminWalletSettings() {
   const { wallets, isLoading, addWallet, isAdding, deleteWallet, isDeleting } = useAdminWallets();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [formData, setFormData] = useState({ currency: "", symbol: "", network: "", address: "", logoUrl: "" });
+  const [formData, setFormData] = useState<FormData>(initialFormData);
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -41,7 +60,7 @@ export default function AdminWalletSettings() {
           </div>
           
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
+            <DialogTrigger >
               <Button className="h-14 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black px-8 shadow-xl shadow-blue-500/20 gap-2">
                 <Plus size={20} /> Add New Asset
               </Button>

@@ -45,7 +45,7 @@ export default function CardManagement() {
   
   const [showDetails, setShowDetails] = useState(false);
   const [unmaskedData, setUnmaskedData] = useState<{ number: string; cvv: string } | null>(null);
-  const [selectedBrand, setSelectedBrand] = useState("visa");
+  const [selectedBrand, setSelectedBrand] = useState<any>("visa");
 
   // Find the most relevant card (Active takes priority, then Pending)
   const activeCard = cards.find((c: any) => c.status === "active");
@@ -100,7 +100,7 @@ export default function CardManagement() {
           {/* Show request button only if no active or pending card exists */}
           {!activeCard && !pendingCard && (
             <Dialog>
-              <DialogTrigger asChild>
+              <DialogTrigger >
                 <Button className="rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold h-12 px-6 shadow-xl shadow-blue-500/20">
                   <Plus className="mr-2 h-4 w-4" /> Request New Card
                 </Button>

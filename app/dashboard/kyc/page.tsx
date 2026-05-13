@@ -16,6 +16,23 @@ import { Badge } from "@/components/ui/badge";
 import { useKYC } from "@/hooks/kycHooks";
 import { useAuth } from "@/hooks/loginHooks";
 
+
+type FormData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  dob: string;
+  ssn: string;
+  addressLine1: string;
+  city: string;
+  state: string;
+  country: string;
+  zipCode: string;
+  documentType: any;
+  documentNumber: string;
+};
+
 export default function KYCPage() {
   const { user, isLoading: isAuthLoading } = useAuth();
   const { submitKYC, isSubmitting } = useKYC();
@@ -27,7 +44,7 @@ export default function KYCPage() {
     back: null
   });
   
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     firstName: "", 
     lastName: "", 
     email: "", 
@@ -205,8 +222,8 @@ export default function KYCPage() {
                   </Select>
                   <InputField label="Document Number" name="documentNumber" value={formData.documentNumber} onChange={handleInputChange} />
                   <div className="grid md:grid-cols-2 gap-6">
-                    <UploadBox label="Front of Document" onChange={(e) => handleFileChange(e, 'front')} preview={previews.front} />
-                    <UploadBox label="Back of Document" onChange={(e) => handleFileChange(e, 'back')} preview={previews.back} />
+                    <UploadBox label="Front of Document" onChange={(e:any) => handleFileChange(e, 'front')} preview={previews.front} />
+                    <UploadBox label="Back of Document" onChange={(e:any) => handleFileChange(e, 'back')} preview={previews.back} />
                   </div>
                 </div>
               )}

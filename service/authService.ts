@@ -34,6 +34,7 @@ export interface UserProfile{
   isEmailVerifies:boolean;
    kycStatus: KycStatus;
    role:Role;
+   updatedAt:Date;
 }
 
 

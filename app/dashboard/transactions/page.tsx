@@ -36,6 +36,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDashboard } from "@/hooks/dashboardHooks";
 import { useTransaction } from "@/hooks/transactionHooks";
+import { AnyARecord } from "dns";
 
 export default function TransactionHistory() {
   const { dashboard } = useDashboard();
@@ -97,7 +98,7 @@ export default function TransactionHistory() {
               />
             </div>
             <div className="flex gap-2">
-              <Select value={filterType} onValueChange={(val) => { setFilterType(val); setPage(1); }}>
+              <Select value={filterType} onValueChange={(val:any) => { setFilterType(val); setPage(1); }}>
                 <SelectTrigger className="w-[160px] rounded-xl bg-slate-50 dark:bg-slate-800/50 border-none h-11">
                   <SelectValue placeholder="All Types" />
                 </SelectTrigger>
@@ -182,7 +183,7 @@ export default function TransactionHistory() {
                       </td>
                       <td className="px-6 py-4 text-right">
                         <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
+                          <DropdownMenuTrigger>
                             <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
                               <MoreVertical size={14} />
                             </Button>

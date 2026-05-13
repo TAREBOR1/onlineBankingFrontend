@@ -102,7 +102,7 @@ export default function AdminDepositRefactored() {
                           setIsSheetOpen(open);
                           if (open) setSelectedRequest(req);
                         }}>
-                          <SheetTrigger asChild>
+                          <SheetTrigger>
                             <Button className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-[10px] uppercase h-10 px-6 gap-2">
                               Review & Credit <Edit3 size={14} />
                             </Button>

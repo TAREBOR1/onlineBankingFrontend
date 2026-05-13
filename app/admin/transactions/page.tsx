@@ -133,7 +133,7 @@ export default function AdminTransactionPage() {
                   </TableCell>
                   <TableCell className="text-right px-8">
                     <Sheet>
-                      <SheetTrigger asChild>
+                      <SheetTrigger>
                         <button 
                           onClick={() => setSelectedTxn(txn)}
                           className={cn(

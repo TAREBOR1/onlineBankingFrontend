@@ -163,7 +163,7 @@ export default function AdminKycPage() {
                             setAdminNote(""); // Reset note when opening
                           }
                         }}>
-                          <SheetTrigger asChild>
+                          <SheetTrigger >
                             <Button className="rounded-xl bg-slate-900 dark:bg-white dark:text-black hover:bg-slate-800 text-white font-black text-[10px] uppercase tracking-widest h-10 px-6 gap-2">
                               Audit Data <Eye size={14} />
                             </Button>

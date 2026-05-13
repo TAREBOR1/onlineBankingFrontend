@@ -64,7 +64,7 @@ export function Sidebar() {
       {/* 2. OVERLAY BACKDROP (Mobile Only) */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-[50] bg-black/40 backdrop-blur-sm md:hidden transition-all"
+          className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm md:hidden transition-all"
           onClick={closeSidebar}
         />
       )}
@@ -72,8 +72,8 @@ export function Sidebar() {
       {/* 3. SIDEBAR DRAWER */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-[60] flex flex-col bg-white dark:bg-[#0d0d0d] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] border-r border-slate-100 dark:border-white/5 shadow-2xl md:shadow-none h-screen",
-          sidebarOpen ? "w-[300px] translate-x-0" : "w-[300px] -translate-x-full"
+          "fixed inset-y-0 left-0 z-60 flex flex-col bg-white dark:bg-[#0d0d0d] transition-all duration-500 ease-in-out border-r border-slate-100 dark:border-white/5 shadow-2xl md:shadow-none h-screen",
+          sidebarOpen ? "w-75 translate-x-0" : "w-75 -translate-x-full"
         )}
       >
         <div className="flex h-full flex-col p-6 overflow-hidden">
@@ -91,49 +91,9 @@ export function Sidebar() {
 
           {/* Navigation Items (The "Grow" Section) */}
           {/* flex-grow handles the "equal manner" height distribution on mobile */}
-          <nav className="flex-grow space-y-2 overflow-y-auto pr-2 custom-scrollbar scroll-smooth">
+          <nav className="grow space-y-2 overflow-y-auto pr-2 custom-scrollbar scroll-smooth">
             {navItems.map((item) => {
-              const isActive = pathname === item.href || (item.subItems?.some(sub => pathname === sub.href));
-              
-              if (item.isDropdown) {
-                return (
-                  <div key={item.name} className="space-y-1">
-                    <button
-                      onClick={() => setTransferOpen(!transferOpen)}
-                      className={cn(
-                        "w-full flex items-center justify-between gap-4 rounded-2xl px-4 py-4 text-sm font-bold transition-all",
-                        isActive && !transferOpen ? "bg-blue-600/10 text-blue-600" : "text-muted-foreground hover:bg-slate-100 dark:hover:bg-white/5"
-                      )}
-                    >
-                      <div className="flex items-center gap-4">
-                        <item.icon className={cn("h-5 w-5", isActive ? "text-blue-600" : "")} />
-                        <span>{item.name}</span>
-                      </div>
-                      <ChevronDown className={cn("h-4 w-4 transition-transform duration-300", transferOpen && "rotate-180")} />
-                    </button>
-                    
-                    <div className={cn(
-                        "overflow-hidden transition-all duration-300 space-y-1 ml-4",
-                        transferOpen ? "max-h-40 opacity-100 mt-2" : "max-h-0 opacity-0"
-                    )}>
-                        {item.subItems?.map((sub) => {
-                            const isSubActive = pathname === sub.href;
-                            return (
-                                <Link key={sub.href} href={sub.href} onClick={() => window.innerWidth < 768 && closeSidebar()}>
-                                    <div className={cn(
-                                        "flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all",
-                                        isSubActive ? "text-blue-600 bg-blue-50 dark:bg-blue-600/10" : "text-muted-foreground hover:text-slate-900 dark:hover:text-slate-200"
-                                    )}>
-                                        <ArrowRight size={14} className={isSubActive ? "opacity-100" : "opacity-0"} />
-                                        {sub.name}
-                                    </div>
-                                </Link>
-                            )
-                        })}
-                    </div>
-                  </div>
-                );
-              }
+              const isActive = pathname === item.href 
 
               return (
                 <Link key={item.name} href={item.href} onClick={() => window.innerWidth < 768 && closeSidebar()}>

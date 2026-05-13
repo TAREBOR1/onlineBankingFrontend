@@ -126,7 +126,7 @@ export default function NotificationPage() {
                         {/* ACTIONS */}
                         <div className="flex flex-col items-end gap-2">
                            <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
+                            <DropdownMenuTrigger >
                               <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                                 <MoreHorizontal size={14} />
                               </Button>

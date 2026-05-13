@@ -106,7 +106,7 @@ export default function AdminCardRequestPage() {
                     </TableCell>
                     <TableCell className="px-8 text-right">
                       <Sheet open={isSheetOpen && selectedReq?._id === req._id} onOpenChange={(val) => { setIsSheetOpen(val); if(val) setSelectedReq(req); }}>
-                        <SheetTrigger asChild>
+                        <SheetTrigger >
                           <Button className="rounded-xl bg-slate-900 dark:bg-white dark:text-black font-black text-[10px] uppercase h-10 px-6 gap-2 shadow-md">
                             Provision <ArrowRight size={14} />
                           </Button>
