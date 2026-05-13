@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import {
   Menu, X, ChevronRight, ChevronDown, ShieldCheck, 
   TrendingUp, CreditCard, Lock, ArrowRight, Smartphone, 
@@ -10,7 +9,7 @@ import {
   ChevronLeft, Fingerprint, BarChart3, Clock
 } from "lucide-react";
 
-// --- Custom CSS for Marquee & Hide Scrollbar ---
+// --- Custom CSS for Minimal Animations & Hide Scrollbar ---
 const CustomStyles = () => (
   <style dangerouslySetInnerHTML={{__html: `
     @keyframes marquee {
@@ -30,29 +29,31 @@ const CustomStyles = () => (
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up {
+      animation: fadeUp 0.6s ease-out forwards;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    .animate-float-delayed {
+      animation: float 8s ease-in-out 1s infinite;
+    }
   `}} />
 );
-
-// --- Animation Config ---
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const } }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
-};
 
 export default function LuxuryBankingLanding() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeMegamenu, setActiveMegamenu] = useState<string | null>(null);
   const [faqOpen, setFaqOpen] = useState<number | null>(0);
-
-  const { scrollYProgress } = useScroll();
-  const yParallax = useTransform(scrollYProgress, [0, 1], [0, -100]);
-  const yParallaxSlow = useTransform(scrollYProgress, [0, 1], [0, -50]);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -76,22 +77,14 @@ export default function LuxuryBankingLanding() {
       
       {/* --- Ambient Background Mesh --- */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden flex items-center justify-center">
-        <motion.div
-          animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.15, 0.1] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-[10%] -right-[10%] w-[60vw] h-[60vw] rounded-full bg-[radial-gradient(circle,rgba(0,82,204,0.12)_0%,transparent_60%)] blur-[120px]"
-        />
-        <motion.div
-          animate={{ scale: [1, 1.15, 1], opacity: [0.05, 0.1, 0.05] }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute top-[30%] -left-[10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(179,27,27,0.08)_0%,transparent_60%)] blur-[100px]"
-        />
+        <div className="absolute -top-[10%] -right-[10%] w-[60vw] h-[60vw] rounded-full bg-[radial-gradient(circle,rgba(0,82,204,0.12)_0%,transparent_60%)] blur-[120px] opacity-70" />
+        <div className="absolute top-[30%] -left-[10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(179,27,27,0.08)_0%,transparent_60%)] blur-[100px] opacity-70" />
       </div>
 
       {/* --- Navigation --- */}
       <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-          isScrolled ? "bg-white/85 backdrop-blur-2xl border-b border-gray-200/50 shadow-[0_10px_30px_rgba(0,0,0,0.04)] h-[80px]" : "bg-transparent h-[92px]"
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+          isScrolled ? "bg-white/90 backdrop-blur-xl border-b border-gray-200/50 shadow-sm h-[80px]" : "bg-transparent h-[92px]"
         } flex items-center`}
         onMouseLeave={() => setActiveMegamenu(null)}
       >
@@ -99,8 +92,8 @@ export default function LuxuryBankingLanding() {
           
           {/* Brand Logo */}
           <div className="flex items-center gap-3 cursor-pointer group z-50">
-            <div className="w-11 h-11 rounded-xl bg-[#0A2540] flex items-center justify-center relative overflow-hidden shadow-lg border border-white/10">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0A2540] to-[#0052CC] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="w-11 h-11 rounded-xl bg-[#0A2540] flex items-center justify-center relative overflow-hidden shadow-lg border border-white/10 transition-transform duration-300 group-hover:scale-105">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0A2540] to-[#0052CC] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="w-4 h-4 bg-[#D4A017] rounded-sm relative z-10" />
             </div>
             <span className="font-bold text-[24px] tracking-tight text-[#0A2540]">ModernBank</span>
@@ -123,7 +116,7 @@ export default function LuxuryBankingLanding() {
                 <button className="flex items-center gap-1.5 font-semibold text-[15px] text-[#0A2540]/85 hover:text-[#0052CC] transition-colors group py-8">
                   {item.title}
                   {item.hasMega && (
-                    <ChevronDown size={14} className={`transition-transform duration-300 ${activeMegamenu === item.title ? "rotate-180 text-[#0052CC]" : ""}`} />
+                    <ChevronDown size={14} className={`transition-transform duration-200 ${activeMegamenu === item.title ? "rotate-180 text-[#0052CC]" : ""}`} />
                   )}
                   <span className="absolute bottom-6 left-0 w-0 h-[2px] bg-[#0052CC] transition-all duration-300 group-hover:w-full rounded-full" />
                 </button>
@@ -136,93 +129,82 @@ export default function LuxuryBankingLanding() {
             <button className="text-[#0A2540] font-bold text-[15px] hover:text-[#0052CC] transition-colors">
               Sign In
             </button>
-            <button className="bg-[#0A2540] hover:bg-[#0052CC] text-white px-8 py-3.5 rounded-full text-[15px] font-bold transition-all duration-300 shadow-[0_15px_30px_rgba(10,37,64,0.15)] hover:shadow-[0_20px_40px_rgba(0,82,204,0.25)] hover:-translate-y-0.5">
+            <button className="bg-[#0A2540] hover:bg-[#0052CC] text-white px-8 py-3.5 rounded-full text-[15px] font-bold transition-all duration-300 shadow-[0_10px_20px_rgba(10,37,64,0.1)] hover:shadow-[0_15px_30px_rgba(0,82,204,0.2)]">
               Open Account
             </button>
           </div>
 
           {/* Mobile Toggle */}
-          <button className="lg:hidden text-[#0A2540] z-50 bg-white/50 backdrop-blur p-2 rounded-xl" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <button className="lg:hidden text-[#0A2540] z-50 bg-white/50 backdrop-blur p-2 rounded-xl transition-colors hover:bg-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
         </div>
 
         {/* --- Megamenu --- */}
-        <AnimatePresence>
-          {activeMegamenu === "Personal Banking" && (
-            <motion.div
-              initial={{ opacity: 0, y: 10, scale: 0.99 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 5, scale: 0.99 }}
-              transition={{ duration: 0.2 }}
-              className="absolute top-full left-0 w-full bg-white/95 backdrop-blur-3xl border-b border-gray-200 shadow-[0_40px_120px_rgba(0,0,0,0.12)] overflow-hidden hidden lg:block"
-            >
-              <div className="max-w-[1320px] mx-auto px-12 py-12 grid grid-cols-12 gap-12">
-                <div className="col-span-8 grid grid-cols-3 gap-10">
-                  {[
-                    { heading: "Accounts", links: ["Checking Accounts", "Savings Accounts", "Student Banking", "Joint Accounts"] },
-                    { heading: "Cards", links: ["Travel Rewards", "Cashback Cards", "Premium Credit Cards", "Business Cards"] },
-                    { heading: "Loans", links: ["Mortgage Loans", "Auto Loans", "Personal Loans", "Refinancing"] }
-                  ].map((col) => (
-                    <div key={col.heading}>
-                      <h4 className="text-xs font-bold text-[#0052CC] uppercase tracking-widest mb-6">{col.heading}</h4>
-                      <ul className="space-y-4">
-                        {col.links.map(link => (
-                          <li key={link}>
-                            <a href="#" className="text-base font-semibold text-[#0A2540] hover:text-[#0052CC] transition-colors flex items-center gap-2 group">
-                              {link} <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#0052CC]" />
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
+        <div 
+          className={`absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-xl overflow-hidden hidden lg:block transition-all duration-300 origin-top ${
+            activeMegamenu === "Personal Banking" ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0 pointer-events-none"
+          }`}
+        >
+          <div className="max-w-[1320px] mx-auto px-12 py-12 grid grid-cols-12 gap-12">
+            <div className="col-span-8 grid grid-cols-3 gap-10">
+              {[
+                { heading: "Accounts", links: ["Checking Accounts", "Savings Accounts", "Student Banking", "Joint Accounts"] },
+                { heading: "Cards", links: ["Travel Rewards", "Cashback Cards", "Premium Credit Cards", "Business Cards"] },
+                { heading: "Loans", links: ["Mortgage Loans", "Auto Loans", "Personal Loans", "Refinancing"] }
+              ].map((col) => (
+                <div key={col.heading}>
+                  <h4 className="text-xs font-bold text-[#0052CC] uppercase tracking-widest mb-6">{col.heading}</h4>
+                  <ul className="space-y-4">
+                    {col.links.map(link => (
+                      <li key={link}>
+                        <a href="#" className="text-base font-semibold text-[#0A2540] hover:text-[#0052CC] transition-colors flex items-center gap-2 group">
+                          {link} <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#0052CC]" />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <div className="col-span-4 bg-gradient-to-br from-[#F5F9FF] to-[#EAF2FF] rounded-[32px] p-8 border border-blue-100 flex flex-col justify-between relative overflow-hidden group">
-                  <div className="absolute -right-10 -top-10 w-40 h-40 bg-[#0052CC]/10 rounded-full blur-2xl transition-transform group-hover:scale-150 duration-700" />
-                  <div className="relative z-10">
-                    <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center text-[#0A2540] mb-6">
-                      <CreditCard size={24} />
-                    </div>
-                    <h3 className="text-2xl font-bold text-[#0A2540] mb-3">Modern Online Banking</h3>
-                    <p className="text-[#0A2540]/70 text-base leading-relaxed mb-8 font-medium">Experience seamless banking with real-time analytics, smart budgeting, and secure payments built for you.</p>
-                  </div>
-                  <button className="text-[#0052CC] font-bold text-base flex items-center gap-2 group/btn relative z-10">
-                    Explore Premium <ChevronRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
-                  </button>
+              ))}
+            </div>
+            <div className="col-span-4 bg-gradient-to-br from-[#F5F9FF] to-[#EAF2FF] rounded-[32px] p-8 border border-blue-100 flex flex-col justify-between relative overflow-hidden group">
+              <div className="absolute -right-10 -top-10 w-40 h-40 bg-[#0052CC]/10 rounded-full blur-2xl transition-transform group-hover:scale-150 duration-500" />
+              <div className="relative z-10">
+                <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center text-[#0A2540] mb-6">
+                  <CreditCard size={24} />
                 </div>
+                <h3 className="text-2xl font-bold text-[#0A2540] mb-3">Modern Online Banking</h3>
+                <p className="text-[#0A2540]/70 text-base leading-relaxed mb-8 font-medium">Experience seamless banking with real-time analytics, smart budgeting, and secure payments built for you.</p>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <button className="text-[#0052CC] font-bold text-base flex items-center gap-2 group/btn relative z-10">
+                Explore Premium <ChevronRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          </div>
+        </div>
 
         {/* Mobile Nav Drawer */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "100vh" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="absolute top-0 left-0 w-full bg-white/95 backdrop-blur-3xl lg:hidden pt-28 px-6 overflow-hidden z-40"
-            >
-              <div className="flex flex-col gap-5 h-full pb-20 overflow-y-auto">
-                {["Personal Banking", "Business Banking", "Investments", "Insurance", "Security"].map((link) => (
-                  <a key={link} href="#" className="text-2xl font-bold text-[#0A2540] border-b border-gray-100 pb-4">
-                    {link}
-                  </a>
-                ))}
-                <div className="pt-4 flex flex-col gap-4 mt-auto">
-                  <button className="bg-[#0A2540] text-white px-6 py-4 rounded-full text-lg font-bold w-full text-center shadow-lg">
-                    Open Account
-                  </button>
-                  <button className="text-[#0A2540] bg-gray-100 px-6 py-4 rounded-full text-lg font-bold w-full text-center">
-                    Sign In
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div 
+          className={`absolute top-0 left-0 w-full bg-white/95 backdrop-blur-xl lg:hidden overflow-hidden z-40 transition-all duration-300 ease-in-out ${
+            mobileMenuOpen ? "h-screen pt-28 px-6 opacity-100 visible" : "h-0 opacity-0 invisible"
+          }`}
+        >
+          <div className="flex flex-col gap-5 h-full pb-20 overflow-y-auto">
+            {["Personal Banking", "Business Banking", "Investments", "Insurance", "Security"].map((link) => (
+              <a key={link} href="#" className="text-2xl font-bold text-[#0A2540] border-b border-gray-100 pb-4">
+                {link}
+              </a>
+            ))}
+            <div className="pt-4 flex flex-col gap-4 mt-auto">
+              <button className="bg-[#0A2540] text-white px-6 py-4 rounded-full text-lg font-bold w-full text-center shadow-lg">
+                Open Account
+              </button>
+              <button className="text-[#0A2540] bg-gray-100 px-6 py-4 rounded-full text-lg font-bold w-full text-center">
+                Sign In
+              </button>
+            </div>
+          </div>
+        </div>
       </nav>
 
       {/* --- Hero Section --- */}
@@ -230,8 +212,8 @@ export default function LuxuryBankingLanding() {
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-12 items-center w-full">
           
           {/* Hero Content */}
-          <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="max-w-2xl relative z-20">
-            <motion.div variants={fadeUp} className="flex flex-wrap gap-3 mb-6 md:mb-8">
+          <div className="max-w-2xl relative z-20 animate-fade-up">
+            <div className="flex flex-wrap gap-3 mb-6 md:mb-8">
               {[
                 { text: "FDIC Insured", icon: ShieldCheck },
                 { text: "Premium Security", icon: Lock }
@@ -240,38 +222,35 @@ export default function LuxuryBankingLanding() {
                   <badge.icon size={14} className="text-[#0052CC]" /> {badge.text}
                 </div>
               ))}
-            </motion.div>
+            </div>
             
-            <motion.h1 variants={fadeUp} className="text-[44px] md:text-6xl lg:text-[82px] font-bold tracking-tight leading-[1.05] mb-6 md:mb-8 text-[#0A2540]">
+            <h1 className="text-[44px] md:text-6xl lg:text-[82px] font-bold tracking-tight leading-[1.05] mb-6 md:mb-8 text-[#0A2540]">
               Bank smarter with a modern financial experience
-            </motion.h1>
+            </h1>
             
-            <motion.p variants={fadeUp} className="text-lg md:text-xl text-[#0A2540]/75 mb-10 md:mb-12 leading-relaxed max-w-xl font-medium">
+            <p className="text-lg md:text-xl text-[#0A2540]/75 mb-10 md:mb-12 leading-relaxed max-w-xl font-medium">
               Manage spending, savings, investments, and credit cards from one beautifully designed, enterprise-grade banking platform.
-            </motion.p>
+            </p>
             
-            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4">
-              <button className="bg-[#0A2540] hover:bg-[#0052CC] text-white px-9 py-5 rounded-full text-base md:text-lg font-bold transition-all duration-300 shadow-[0_20px_40px_rgba(10,37,64,0.25)] hover:shadow-[0_30px_60px_rgba(0,82,204,0.35)] hover:-translate-y-1 text-center">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button className="bg-[#0A2540] hover:bg-[#0052CC] text-white px-9 py-5 rounded-full text-base md:text-lg font-bold transition-all duration-300 shadow-[0_15px_30px_rgba(10,37,64,0.15)] hover:shadow-[0_20px_40px_rgba(0,82,204,0.25)] text-center">
                 Open an Account
               </button>
               <button className="bg-white/80 hover:bg-white text-[#0A2540] border border-gray-200/60 px-9 py-5 rounded-full text-base md:text-lg font-bold transition-all duration-300 flex items-center justify-center gap-2 shadow-sm hover:shadow-md backdrop-blur-sm group">
                 Explore Features <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </button>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
           {/* Detailed iPhone Mockup Visual */}
           <div className="relative h-[600px] md:h-[750px] hidden md:block perspective-[2000px] z-10 w-full">
-            <motion.div style={{ y: yParallax }} className="relative w-full h-full transform-style-3d flex items-center justify-center">
+            <div className="relative w-full h-full flex items-center justify-center">
               
               {/* Back ambient glow */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-gradient-to-tr from-[#0052CC]/15 to-[#B31B1B]/10 rounded-full blur-[80px]" />
 
               {/* Central iPhone */}
-              <motion.div 
-                animate={{ y: [-12, 12, -12] }} transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-                className="relative w-[340px] h-[720px] bg-white rounded-[56px] border-[14px] border-[#0A2540] shadow-[0_50px_120px_rgba(0,0,0,0.18)] overflow-hidden z-20 flex flex-col"
-              >
+              <div className="relative w-[340px] h-[720px] bg-white rounded-[56px] border-[14px] border-[#0A2540] shadow-[0_50px_120px_rgba(0,0,0,0.18)] overflow-hidden z-20 flex flex-col animate-float">
                 {/* Dynamic Island */}
                 <div className="absolute top-2 inset-x-0 flex justify-center z-50">
                   <div className="w-[120px] h-[32px] bg-[#0A2540] rounded-full flex items-center justify-between px-3">
@@ -303,8 +282,8 @@ export default function LuxuryBankingLanding() {
                     </div>
                     <div className="text-[32px] font-bold mb-5 tracking-tight">$84,250.00</div>
                     <div className="flex gap-3 relative z-10">
-                      <button className="flex-1 bg-white/15 backdrop-blur-md rounded-xl py-2.5 text-[11px] font-bold flex items-center justify-center gap-1.5"><ArrowUpRight size={14} /> Send</button>
-                      <button className="flex-1 bg-white text-[#0A2540] rounded-xl py-2.5 text-[11px] font-bold flex items-center justify-center gap-1.5"><Plus size={14} /> Add Money</button>
+                      <button className="flex-1 bg-white/15 backdrop-blur-md rounded-xl py-2.5 text-[11px] font-bold flex items-center justify-center gap-1.5 hover:bg-white/20 transition-colors"><ArrowUpRight size={14} /> Send</button>
+                      <button className="flex-1 bg-white text-[#0A2540] rounded-xl py-2.5 text-[11px] font-bold flex items-center justify-center gap-1.5 hover:bg-gray-100 transition-colors"><Plus size={14} /> Add Money</button>
                     </div>
                   </div>
 
@@ -330,7 +309,7 @@ export default function LuxuryBankingLanding() {
                   <div className="flex-1">
                     <div className="flex justify-between items-center mb-3">
                       <h3 className="text-sm font-bold text-[#0A2540]">Recent Activity</h3>
-                      <span className="text-[11px] font-bold text-[#0052CC]">See All</span>
+                      <span className="text-[11px] font-bold text-[#0052CC] cursor-pointer hover:underline">See All</span>
                     </div>
                     <div className="space-y-3">
                       {[
@@ -357,7 +336,7 @@ export default function LuxuryBankingLanding() {
                   {/* Bottom Navigation */}
                   <div className="absolute bottom-0 inset-x-0 h-[85px] bg-white/90 backdrop-blur-xl border-t border-gray-100 flex items-center justify-around px-4 pb-5">
                     {[Home, PieChart, CreditCard, User].map((Icon, i) => (
-                      <div key={i} className={`flex flex-col items-center gap-1 ${i === 0 ? 'text-[#0052CC]' : 'text-gray-400'}`}>
+                      <div key={i} className={`flex flex-col items-center gap-1 cursor-pointer hover:text-[#0052CC] transition-colors ${i === 0 ? 'text-[#0052CC]' : 'text-gray-400'}`}>
                         <Icon size={22} className={i === 0 ? "fill-current" : ""} />
                         {i === 0 && <div className="w-1.5 h-1.5 bg-[#0052CC] rounded-full mt-1" />}
                       </div>
@@ -365,13 +344,10 @@ export default function LuxuryBankingLanding() {
                   </div>
 
                 </div>
-              </motion.div>
+              </div>
 
               {/* Floating Element 1 - Notification */}
-              <motion.div 
-                animate={{ y: [0, -15, 0] }} transition={{ repeat: Infinity, duration: 6, ease: "easeInOut", delay: 1 }}
-                className="absolute top-[20%] -right-[70px] z-30 bg-white/95 backdrop-blur-2xl rounded-[20px] p-4 shadow-[0_25px_60px_rgba(0,0,0,0.12)] border border-gray-100 flex items-center gap-3 w-60"
-              >
+              <div className="absolute top-[20%] -right-[70px] z-30 bg-white/95 backdrop-blur-xl rounded-[20px] p-4 shadow-[0_20px_40px_rgba(0,0,0,0.1)] border border-gray-100 flex items-center gap-3 w-60 animate-float-delayed">
                 <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center">
                   <CheckCircle2 className="text-green-600" size={20} />
                 </div>
@@ -379,13 +355,10 @@ export default function LuxuryBankingLanding() {
                   <div className="text-sm font-bold text-[#0A2540]">Apple Pay</div>
                   <div className="text-[11px] font-medium text-gray-500">Payment successful</div>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Floating Element 2 - Analytics Card */}
-              <motion.div 
-                animate={{ y: [0, 20, 0] }} transition={{ repeat: Infinity, duration: 8, ease: "easeInOut", delay: 0.5 }}
-                className="absolute bottom-[25%] -left-[60px] z-30 bg-white/95 backdrop-blur-2xl rounded-[24px] p-5 shadow-[0_30px_60px_rgba(0,0,0,0.15)] border border-gray-100 w-52"
-              >
+              <div className="absolute bottom-[25%] -left-[60px] z-30 bg-white/95 backdrop-blur-xl rounded-[24px] p-5 shadow-[0_20px_40px_rgba(0,0,0,0.1)] border border-gray-100 w-52 animate-float">
                 <div className="flex justify-between items-center mb-3">
                   <div className="text-[11px] font-bold text-gray-500 uppercase tracking-widest">Spending</div>
                   <div className="text-[11px] font-bold text-green-500 flex items-center gap-0.5"><Minus size={10}/> 12%</div>
@@ -396,9 +369,9 @@ export default function LuxuryBankingLanding() {
                      <div key={i} className={`flex-1 rounded-t-sm ${i === 4 ? 'bg-[#0052CC]' : 'bg-blue-50'}`} style={{height: `${h}%`}} />
                    ))}
                 </div>
-              </motion.div>
+              </div>
 
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -408,7 +381,6 @@ export default function LuxuryBankingLanding() {
         <div className="w-full mx-auto px-4">
           <p className="text-center text-xs md:text-sm font-bold text-gray-400 uppercase tracking-widest mb-6 md:mb-8">Trusted by millions worldwide</p>
           <div className="w-full flex overflow-hidden relative">
-             {/* Fade edges */}
              <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-[#F5F9FF] to-transparent z-10" />
              <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[#F5F9FF] to-transparent z-10" />
              
@@ -426,14 +398,14 @@ export default function LuxuryBankingLanding() {
       {/* --- Smart Online Banking Section --- */}
       <section className="py-20 md:py-[150px] bg-white">
         <div className="max-w-[1320px] mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp} className="order-2 lg:order-1 relative">
-             <div className="aspect-square md:aspect-[4/3] bg-[#F7F9FC] rounded-[32px] md:rounded-[48px] overflow-hidden border border-gray-100 flex items-center justify-center p-6 md:p-10 shadow-inner relative">
-               <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=1600&auto=format&fit=crop" alt="Online Banking on Laptop" className="w-full h-full object-cover rounded-[20px] md:rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.1)]" />
-               <div className="absolute inset-0 bg-gradient-to-tr from-[#0A2540]/20 to-transparent mix-blend-overlay rounded-[32px] md:rounded-[48px]" />
+          <div className="order-2 lg:order-1 relative">
+             <div className="aspect-square md:aspect-[4/3] bg-[#F7F9FC] rounded-[32px] md:rounded-[48px] overflow-hidden border border-gray-100 flex items-center justify-center p-6 md:p-10 shadow-inner relative hover:shadow-md transition-shadow duration-300">
+               <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=1600&auto=format&fit=crop" alt="Online Banking on Laptop" className="w-full h-full object-cover rounded-[20px] md:rounded-[32px] shadow-[0_10px_30px_rgba(0,0,0,0.08)]" />
+               <div className="absolute inset-0 bg-gradient-to-tr from-[#0A2540]/10 to-transparent mix-blend-overlay rounded-[32px] md:rounded-[48px]" />
              </div>
-          </motion.div>
+          </div>
 
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp} className="order-1 lg:order-2">
+          <div className="order-1 lg:order-2">
              <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-[#EAF2FF] flex items-center justify-center mb-6 md:mb-8 shadow-sm">
                <Globe className="text-[#0052CC]" size={30} />
              </div>
@@ -458,14 +430,14 @@ export default function LuxuryBankingLanding() {
                  </div>
                ))}
              </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* --- Premium Credit Cards Section --- */}
       <section className="py-20 md:py-[150px] bg-[#F5F9FF] overflow-hidden">
         <div className="max-w-[1320px] mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp}>
+          <div>
              <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-[#FFF9E5] flex items-center justify-center mb-6 md:mb-8 shadow-sm">
                <CreditCard className="text-[#D4A017]" size={30} />
              </div>
@@ -486,57 +458,49 @@ export default function LuxuryBankingLanding() {
              <button className="text-[#0A2540] font-bold text-base md:text-lg flex items-center gap-2 group hover:text-[#D4A017] transition-colors">
                 Explore Premium Cards <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
              </button>
-          </motion.div>
+          </div>
 
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp} className="relative h-[400px] md:h-[600px] flex items-center justify-center">
-             <div className="absolute inset-0 bg-[#081B33] rounded-[32px] md:rounded-[48px] shadow-[0_40px_100px_rgba(0,0,0,0.15)] overflow-hidden">
+          <div className="relative h-[400px] md:h-[600px] flex items-center justify-center">
+             <div className="absolute inset-0 bg-[#081B33] rounded-[32px] md:rounded-[48px] shadow-lg overflow-hidden">
                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,160,23,0.2),transparent_70%)]" />
-               <img src="https://images.unsplash.com/photo-1589758438368-0ad531db3366?q=80&w=1600&auto=format&fit=crop" alt="Premium Cards" className="w-full h-full object-cover mix-blend-overlay opacity-50" />
+               <img src="https://images.unsplash.com/photo-1589758438368-0ad531db3366?q=80&w=1600&auto=format&fit=crop" alt="Premium Cards" className="w-full h-full object-cover mix-blend-overlay opacity-40" />
              </div>
              
-             {/* 3D Premium Cards UI Overlays */}
-             <div className="relative w-full max-w-md perspective-[1000px] z-10">
-               <motion.div style={{ y: yParallaxSlow }} className="w-full relative h-[300px] md:h-[400px] flex items-center justify-center">
-                 <motion.div 
-                   animate={{ y: [-10, 10, -10], rotateZ: [12, 15, 12], rotateX: [15, 10, 15] }} 
-                   transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-                   className="absolute w-[280px] md:w-[360px] aspect-[1.586] bg-gradient-to-br from-[#1E293B] via-black to-[#0A2540] rounded-[20px] md:rounded-[24px] shadow-[0_30px_60px_rgba(0,0,0,0.8)] p-6 md:p-8 border border-gray-700 backdrop-blur-md z-10 -ml-12 md:-ml-16 -mt-8 md:-mt-10"
-                 >
+             {/* Static 3D-styled Premium Cards UI Overlays */}
+             <div className="relative w-full max-w-md z-10 flex items-center justify-center">
+               <div className="w-full relative h-[300px] md:h-[400px]">
+                 <div className="absolute top-0 right-10 md:right-16 w-[280px] md:w-[360px] aspect-[1.586] bg-gradient-to-br from-[#1E293B] via-black to-[#0A2540] rounded-[20px] md:rounded-[24px] shadow-xl p-6 md:p-8 border border-gray-700 backdrop-blur-md z-10 transform rotate-[-8deg]">
                     <div className="w-10 h-6 md:w-14 md:h-10 bg-[#D4A017] rounded mb-8 md:mb-12 opacity-90 shadow-sm" />
                     <div className="text-white/90 font-mono text-lg md:text-2xl tracking-[0.2em] mb-4 md:mb-6">•••• •••• •••• 8821</div>
                     <div className="flex justify-between items-center text-white/70">
                       <div className="text-[10px] md:text-sm font-bold tracking-widest uppercase">Reserve Elite</div>
                       <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10" />
                     </div>
-                 </motion.div>
+                 </div>
 
-                 <motion.div 
-                   animate={{ y: [10, -10, 10], rotateZ: [-12, -8, -12], rotateX: [-15, -20, -15] }} 
-                   transition={{ repeat: Infinity, duration: 9, ease: "easeInOut", delay: 1 }}
-                   className="absolute w-[280px] md:w-[360px] aspect-[1.586] bg-gradient-to-br from-[#D4A017] via-[#B31B1B] to-[#0A2540] rounded-[20px] md:rounded-[24px] shadow-[0_40px_80px_rgba(0,0,0,0.6)] p-6 md:p-8 border border-white/30 z-20 ml-8 md:ml-12 mt-12 md:mt-16 backdrop-blur-md"
-                 >
+                 <div className="absolute bottom-0 left-4 md:left-8 w-[280px] md:w-[360px] aspect-[1.586] bg-gradient-to-br from-[#D4A017] via-[#B31B1B] to-[#0A2540] rounded-[20px] md:rounded-[24px] shadow-2xl p-6 md:p-8 border border-white/30 z-20 backdrop-blur-md transform rotate-[5deg] hover:-translate-y-2 transition-transform duration-300">
                     <div className="w-10 h-6 md:w-14 md:h-10 bg-white/80 rounded mb-8 md:mb-12 shadow-sm" />
                     <div className="text-white font-mono text-lg md:text-2xl tracking-[0.2em] mb-4 md:mb-6 drop-shadow-md">•••• •••• •••• 1042</div>
                     <div className="flex justify-between items-center text-white">
                       <div className="text-[10px] md:text-sm font-bold tracking-widest uppercase">Platinum</div>
                       <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/20" />
                     </div>
-                 </motion.div>
-               </motion.div>
+                 </div>
+               </div>
              </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* --- Wealth Management Section --- */}
       <section className="py-20 md:py-[150px] bg-white">
         <div className="max-w-[1320px] mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp} className="order-2 lg:order-1 relative">
-            <div className="aspect-[4/3] bg-[#0A2540] rounded-[32px] md:rounded-[48px] overflow-hidden p-6 md:p-10 relative shadow-[0_40px_120px_rgba(10,37,64,0.15)] flex flex-col justify-end">
-              <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1600&auto=format&fit=crop" alt="Trading Dashboard" className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay" />
+          <div className="order-2 lg:order-1 relative">
+            <div className="aspect-[4/3] bg-[#0A2540] rounded-[32px] md:rounded-[48px] overflow-hidden p-6 md:p-10 relative shadow-xl flex flex-col justify-end">
+              <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1600&auto=format&fit=crop" alt="Trading Dashboard" className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A2540] via-[#0A2540]/60 to-transparent" />
               
-              <div className="relative z-10 w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-[24px] md:rounded-[32px] p-6 md:p-8">
+              <div className="relative z-10 w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-[24px] md:rounded-[32px] p-6 md:p-8 hover:bg-white/15 transition-colors duration-300">
                  <div className="flex justify-between items-center mb-4 md:mb-6">
                    <div className="text-white/80 font-bold text-xs md:text-sm">Portfolio Value</div>
                    <div className="text-[#EAF2FF] bg-[#0052CC] px-3 py-1 rounded-full text-[10px] md:text-xs font-bold">+12.4% YTD</div>
@@ -554,13 +518,13 @@ export default function LuxuryBankingLanding() {
                        </linearGradient>
                      </defs>
                    </svg>
-                   <div className="absolute top-2 right-0 w-3 h-3 md:w-4 md:h-4 bg-white rounded-full border-[3px] md:border-4 border-[#00C2FF] shadow-[0_0_20px_rgba(0,194,255,0.8)]" />
+                   <div className="absolute top-2 right-0 w-3 h-3 md:w-4 md:h-4 bg-white rounded-full border-[3px] md:border-4 border-[#00C2FF] shadow-[0_0_15px_rgba(0,194,255,0.6)]" />
                  </div>
               </div>
             </div>
-          </motion.div>
+          </div>
           
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp} className="order-1 lg:order-2">
+          <div className="order-1 lg:order-2">
              <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-[#EAF2FF] flex items-center justify-center mb-6 md:mb-8 shadow-sm">
                <TrendingUp className="text-[#0052CC]" size={30} />
              </div>
@@ -577,20 +541,20 @@ export default function LuxuryBankingLanding() {
                  { title: "Market insights", desc: "Real-time market data and global news." },
                  { title: "AI recommendations", desc: "Smart algorithmic investment advice." }
                ].map((item, i) => (
-                 <div key={i}>
+                 <div key={i} className="hover:translate-x-1 transition-transform duration-300">
                    <h4 className="text-base md:text-lg font-bold text-[#0A2540] mb-1 md:mb-2">{item.title}</h4>
                    <p className="text-sm font-medium text-gray-500">{item.desc}</p>
                  </div>
                ))}
              </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* --- Business Banking Section --- */}
       <section className="py-20 md:py-[150px] bg-[#F5F9FF]">
         <div className="max-w-[1320px] mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp}>
+          <div>
              <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white flex items-center justify-center mb-6 md:mb-8 shadow-sm">
                <Briefcase className="text-[#0A2540]" size={30} />
              </div>
@@ -600,15 +564,15 @@ export default function LuxuryBankingLanding() {
              <p className="text-base md:text-xl text-[#0A2540]/70 mb-8 md:mb-10 leading-relaxed font-medium max-w-lg">
                Highlight invoicing tools, seamless payroll management, premium business credit cards, team permissions, and advanced analytics for entrepreneurs.
              </p>
-             <button className="bg-[#0A2540] hover:bg-[#0052CC] text-white px-8 py-4 rounded-full text-base font-bold transition-all duration-300 shadow-lg hover:-translate-y-1">
+             <button className="bg-[#0A2540] hover:bg-[#0052CC] text-white px-8 py-4 rounded-full text-base font-bold transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5">
                 Explore Business Accounts
              </button>
-          </motion.div>
+          </div>
 
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp}>
-             <div className="aspect-[4/3] bg-white rounded-[32px] md:rounded-[48px] overflow-hidden p-6 md:p-10 relative shadow-[0_40px_100px_rgba(10,37,64,0.08)] border border-gray-100 flex flex-col justify-center">
-                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1600&auto=format&fit=crop" alt="Business Meeting" className="absolute inset-0 w-full h-full object-cover opacity-20" />
-                <div className="absolute inset-0 bg-white/80 backdrop-blur-sm" />
+          <div>
+             <div className="aspect-[4/3] bg-white rounded-[32px] md:rounded-[48px] overflow-hidden p-6 md:p-10 relative shadow-lg border border-gray-100 flex flex-col justify-center transition-shadow hover:shadow-xl duration-300">
+                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1600&auto=format&fit=crop" alt="Business Meeting" className="absolute inset-0 w-full h-full object-cover opacity-10" />
+                <div className="absolute inset-0 bg-white/70 backdrop-blur-sm" />
                 
                 <div className="relative z-10">
                   <div className="flex justify-between items-center mb-8 md:mb-10">
@@ -623,37 +587,37 @@ export default function LuxuryBankingLanding() {
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
-                    <div className="bg-[#F5F9FF] rounded-[20px] md:rounded-[24px] p-5 md:p-6 border border-blue-50">
+                    <div className="bg-[#F5F9FF] rounded-[20px] md:rounded-[24px] p-5 md:p-6 border border-blue-50 hover:bg-blue-50 transition-colors">
                       <div className="text-xs md:text-sm font-bold text-gray-500 mb-2">Invoices Paid</div>
                       <div className="text-xl md:text-2xl font-bold text-[#0A2540]">$45,200</div>
                     </div>
-                    <div className="bg-[#FFF9E5] rounded-[20px] md:rounded-[24px] p-5 md:p-6 border border-yellow-50">
+                    <div className="bg-[#FFF9E5] rounded-[20px] md:rounded-[24px] p-5 md:p-6 border border-yellow-50 hover:bg-yellow-50 transition-colors">
                       <div className="text-xs md:text-sm font-bold text-gray-500 mb-2">Payroll Due</div>
                       <div className="text-xl md:text-2xl font-bold text-[#0A2540]">$28,400</div>
                     </div>
                   </div>
 
-                  <div className="bg-[#0A2540] rounded-[20px] md:rounded-[24px] p-5 md:p-6 flex items-center justify-between relative overflow-hidden shadow-xl">
-                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,82,204,0.5),transparent)]" />
+                  <div className="bg-[#0A2540] rounded-[20px] md:rounded-[24px] p-5 md:p-6 flex items-center justify-between relative overflow-hidden shadow-md group cursor-pointer">
+                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,82,204,0.3),transparent)] group-hover:opacity-70 transition-opacity" />
                      <div className="relative z-10 flex items-center justify-between w-full">
                        <div className="text-white font-bold text-base md:text-lg">Cash Flow Projection</div>
-                       <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white"><ArrowUpRight size={16}/></div>
+                       <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white group-hover:bg-white/30 transition-colors"><ArrowUpRight size={16}/></div>
                      </div>
                   </div>
                 </div>
              </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* --- Advanced Security Section --- */}
       <section className="py-20 md:py-[150px] bg-[#081B33] relative overflow-hidden text-white md:rounded-[48px] md:mx-4 lg:mx-8 md:my-10 shadow-2xl">
-        <div className="absolute top-0 right-0 w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-[#0052CC]/30 rounded-full blur-[100px] md:blur-[150px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-[#B31B1B]/20 rounded-full blur-[100px] md:blur-[150px] pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-[#0052CC]/20 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-[#B31B1B]/15 rounded-full blur-[100px] pointer-events-none" />
         
         <div className="max-w-[1320px] mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center relative z-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-            <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white/10 flex items-center justify-center text-white mb-6 md:mb-8 border border-white/20 backdrop-blur-md shadow-lg">
+          <div>
+            <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white/10 flex items-center justify-center text-white mb-6 md:mb-8 border border-white/20 backdrop-blur-sm shadow-sm">
               <Lock size={28} />
             </div>
             <h2 className="text-3xl md:text-5xl lg:text-[56px] font-bold mb-6 tracking-tight leading-[1.1]">
@@ -670,24 +634,24 @@ export default function LuxuryBankingLanding() {
                 "Instant alerts"
               ].map((feat, i) => (
                 <div key={i} className="flex items-center gap-3 md:gap-4 text-white font-semibold text-base md:text-lg">
-                  <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-[#0052CC] to-[#3B82F6] flex items-center justify-center shadow-lg shrink-0">
+                  <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-[#0052CC] to-[#3B82F6] flex items-center justify-center shadow-sm shrink-0">
                     <ShieldCheck size={14} className="text-white" />
                   </div>
                   {feat}
                 </div>
               ))}
             </div>
-          </motion.div>
+          </div>
           
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 1 }} className="relative h-[350px] md:h-[500px] flex items-center justify-center">
-             <div className="absolute inset-4 md:inset-0 border border-white/10 rounded-full animate-[spin_40s_linear_infinite]" />
-             <div className="absolute inset-12 md:inset-16 border border-[#0052CC]/40 rounded-full animate-[spin_25s_linear_infinite_reverse]" />
+          <div className="relative h-[350px] md:h-[500px] flex items-center justify-center">
+             <div className="absolute inset-4 md:inset-0 border border-white/10 rounded-full" />
+             <div className="absolute inset-12 md:inset-16 border border-[#0052CC]/30 rounded-full" />
              
-             <div className="w-36 h-36 md:w-48 md:h-48 bg-gradient-to-br from-[#0A2540] to-[#0052CC] rounded-[32px] md:rounded-[40px] rotate-45 flex items-center justify-center shadow-[0_0_80px_rgba(0,82,204,0.8)] border border-white/20 backdrop-blur-2xl z-10 relative overflow-hidden">
-               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.2),transparent)]" />
-               <Fingerprint size={64} className="text-white -rotate-45 relative z-10 drop-shadow-2xl md:w-[80px] md:h-[80px]" strokeWidth={1} />
+             <div className="w-36 h-36 md:w-48 md:h-48 bg-gradient-to-br from-[#0A2540] to-[#0052CC] rounded-[32px] md:rounded-[40px] rotate-45 flex items-center justify-center shadow-[0_0_60px_rgba(0,82,204,0.6)] border border-white/20 backdrop-blur-xl z-10 relative overflow-hidden transition-transform hover:scale-105 duration-500 cursor-default">
+               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1),transparent)]" />
+               <Fingerprint size={64} className="text-white -rotate-45 relative z-10 drop-shadow-lg md:w-[80px] md:h-[80px]" strokeWidth={1} />
              </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -703,7 +667,7 @@ export default function LuxuryBankingLanding() {
                <div className="w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center text-[#0A2540] opacity-50 cursor-not-allowed">
                  <ChevronLeft size={20} />
                </div>
-               <div className="w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center text-[#0A2540] shadow-sm">
+               <div className="w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center text-[#0A2540] shadow-sm cursor-pointer hover:bg-gray-50 transition-colors">
                  <ChevronRight size={20} />
                </div>
             </div>
@@ -715,7 +679,7 @@ export default function LuxuryBankingLanding() {
           {testimonials.map((test, i) => (
             <div 
               key={i} 
-              className="min-w-[85vw] md:min-w-[45vw] lg:min-w-[420px] snap-center shrink-0 bg-white/70 backdrop-blur-xl rounded-[32px] p-8 md:p-12 border border-white shadow-[0_15px_40px_rgba(10,37,64,0.04)]"
+              className="min-w-[85vw] md:min-w-[45vw] lg:min-w-[420px] snap-center shrink-0 bg-white/80 backdrop-blur-md rounded-[32px] p-8 md:p-12 border border-white shadow-sm hover:shadow-md transition-shadow duration-300"
             >
               <div className="text-[#D4A017] mb-6 flex gap-1">
                 {[1,2,3,4,5].map((star) => (
@@ -724,7 +688,7 @@ export default function LuxuryBankingLanding() {
               </div>
               <p className="text-lg md:text-xl text-[#0A2540] font-bold leading-relaxed mb-10 tracking-tight">"{test.quote}"</p>
               <div className="flex items-center gap-4 mt-auto">
-                <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-[#0A2540] to-[#0052CC] flex items-center justify-center text-white font-bold text-xl shadow-md">
+                <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-[#0A2540] to-[#0052CC] flex items-center justify-center text-white font-bold text-xl shadow-sm">
                   {test.name.charAt(0)}
                 </div>
                 <div>
@@ -751,24 +715,19 @@ export default function LuxuryBankingLanding() {
             ].map((faq, i) => (
               <div key={i} className="bg-[#F7F9FC] rounded-[20px] md:rounded-[24px] shadow-sm border border-gray-100 overflow-hidden">
                 <button 
-                  className="w-full px-6 py-5 md:px-8 md:py-6 flex justify-between items-center text-left focus:outline-none"
+                  className="w-full px-6 py-5 md:px-8 md:py-6 flex justify-between items-center text-left focus:outline-none hover:bg-gray-50 transition-colors"
                   onClick={() => setFaqOpen(faqOpen === i ? null : i)}
                 >
                   <span className="font-bold text-base md:text-lg text-[#0A2540] pr-6">{faq.q}</span>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors shrink-0 ${faqOpen === i ? 'bg-[#0052CC] text-white' : 'bg-white text-[#0A2540] shadow-sm'}`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 shrink-0 ${faqOpen === i ? 'bg-[#0052CC] text-white' : 'bg-white text-[#0A2540] shadow-sm'}`}>
                     {faqOpen === i ? <Minus size={16} /> : <Plus size={16} />}
                   </div>
                 </button>
-                <AnimatePresence>
-                  {faqOpen === i && (
-                    <motion.div 
-                      initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }}
-                      className="px-6 md:px-8 pb-5 md:pb-6 text-[#0A2540]/70 text-sm md:text-lg leading-relaxed font-medium"
-                    >
-                      {faq.a}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <div 
+                  className={`px-6 md:px-8 text-[#0A2540]/70 text-sm md:text-lg leading-relaxed font-medium transition-all duration-300 overflow-hidden ${faqOpen === i ? 'max-h-40 pb-5 md:pb-6 opacity-100' : 'max-h-0 opacity-0'}`}
+                >
+                  {faq.a}
+                </div>
               </div>
             ))}
           </div>
@@ -777,9 +736,9 @@ export default function LuxuryBankingLanding() {
 
       {/* --- Premium CTA Section --- */}
       <section className="py-24 md:py-[160px] relative overflow-hidden bg-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,82,204,0.08),transparent_70%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,82,204,0.06),transparent_70%)] pointer-events-none" />
         
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="max-w-4xl mx-auto px-6 text-center relative z-10">
+        <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
           <h2 className="text-4xl md:text-6xl lg:text-[68px] font-bold text-[#0A2540] tracking-tight mb-6 md:mb-8 leading-[1.05]">
             Experience premium digital banking today
           </h2>
@@ -787,14 +746,14 @@ export default function LuxuryBankingLanding() {
             Open your account in minutes and unlock a modern banking experience tailored perfectly for you.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-[#0A2540] hover:bg-[#0052CC] text-white px-8 md:px-10 py-4 md:py-5 rounded-full text-base md:text-lg font-bold transition-all duration-300 shadow-[0_20px_40px_rgba(10,37,64,0.2)] hover:-translate-y-1">
+            <button className="bg-[#0A2540] hover:bg-[#0052CC] text-white px-8 md:px-10 py-4 md:py-5 rounded-full text-base md:text-lg font-bold transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5">
               Get Started
             </button>
-            <button className="bg-white hover:bg-gray-50 text-[#0A2540] border border-gray-200 px-8 md:px-10 py-4 md:py-5 rounded-full text-base md:text-lg font-bold transition-all duration-300 shadow-sm">
+            <button className="bg-white hover:bg-gray-50 text-[#0A2540] border border-gray-200 px-8 md:px-10 py-4 md:py-5 rounded-full text-base md:text-lg font-bold transition-colors shadow-sm">
               Talk to an Advisor
             </button>
           </div>
-        </motion.div>
+        </div>
       </section>
 
       {/* --- Luxury Minimal Footer --- */}
