@@ -4,7 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import Providers from "@/components/Providers";
 import { Toaster } from "react-hot-toast";
-import LenisScroll from "@/components/LenisScroll";
+
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -19,8 +19,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tyrex- Smart vehicle booking platform",
-  description: "tyrex is a wonderrful smart web app, with modern interface and reliable ride where use can have any kind of car they want ",
+  title: "ModernBank - Number 1 Digital Banking Platform",
+  description:
+    "ModernBank is a secure and  online banking platform that enables users to manage accounts, transfer funds, track transactions, pay bills, and experience seamless digital banking with speed, reliability, and advanced security.",
 };
 
 export default function RootLayout({
@@ -34,7 +35,7 @@ export default function RootLayout({
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable)}
        suppressHydrationWarning>
       <body className="min-h-full flex flex-col">
-        <LenisScroll/>
+       
         <Providers> 
          {children}
         </Providers>

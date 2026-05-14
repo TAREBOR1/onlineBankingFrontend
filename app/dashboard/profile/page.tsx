@@ -47,7 +47,7 @@ export default function SmartProfilePage() {
         {/* TOP INTERFACE HEADER */}
         <div className="flex justify-between items-end border-b border-slate-100 dark:border-white/5 pb-6">
           <div className="space-y-1">
-            <h1 className="text-2xl font-black tracking-tight uppercase italic">Account Node</h1>
+            <h1 className="text-2xl font-black tracking-tight uppercase ">Account Node</h1>
             <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Live Session • {user?._id.slice(-12).toUpperCase()}</p>
           </div>
           <Badge variant="outline" className="rounded-lg border-blue-500/20 text-blue-600 font-bold px-3 py-1 text-[10px] uppercase">
@@ -77,7 +77,7 @@ export default function SmartProfilePage() {
                 </Button>
               </div>
               
-              <h2 className="text-xl font-black uppercase italic tracking-tighter">{user?.firstname} {user?.lastname}</h2>
+              <h2 className="text-xl font-black uppercase  tracking-tighter">{user?.firstname} {user?.lastname}</h2>
               
               <div className="mt-8 space-y-2">
                 <StatusBadge icon={<ShieldCheck size={12}/>} label="Verification" value={user?.kycStatus} active={user?.kycStatus === 'verified'} />

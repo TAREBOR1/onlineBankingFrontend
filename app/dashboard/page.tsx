@@ -34,11 +34,16 @@ export default function BankingDashboard() {
   const { user } = useAuth();
   const router = useRouter();
 
-  const copyToClipboard = (text: string) => {
-    if (!text) return;
-    navigator.clipboard.writeText(text);
-    toast.success("Copied to clipboard");
-  };
+ const getGreeting = (): string => {
+  const hour = new Date().getHours();
+  if (hour < 12) {
+    return "Good Morning";
+  }
+  if (hour < 18) {
+    return "Good Afternoon";
+  }
+  return "Good Evening";
+};
 
   const formatDateTime = (date: Date | string) => {
     if (!date) return "N/A";
@@ -77,7 +82,7 @@ export default function BankingDashboard() {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50">
-                Welcome, {user?.firstname || "User"}
+                {getGreeting()}, {user?.firstname || "User"}
               </h2>
               <Badge 
                 variant={isVerified ? "default" : "outline"} 

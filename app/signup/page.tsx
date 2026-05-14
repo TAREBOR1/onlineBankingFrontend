@@ -17,11 +17,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
+
 import { useAuth } from "@/hooks/loginHooks";
+import { PublicRoute } from "@/components/Public";
 
 export default function SignupPage() {
-  const [isLoading, setIsLoading] = useState(false);
+
   const {register} = useAuth()
 
   const [formData, setFormData] = useState({
@@ -48,13 +49,8 @@ export default function SignupPage() {
   
       }
 
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    // Add your Registration logic here
-  };
-
   return (
+     <PublicRoute>
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-white dark:bg-[#050505]">
       
       {/* LEFT SIDE: BRANDED ONBOARDING AREA */}
@@ -101,8 +97,13 @@ export default function SignupPage() {
           {/* Header */}
           <div className="space-y-2">
             <Link href="/" className="flex items-center gap-2 mb-8">
-              <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-black italic shadow-lg">N</div>
-              <span className="text-xl font-black tracking-tighter dark:text-white uppercase italic">NexusBank</span>
+               {/* Brand Logo */}
+          <div className="flex items-center gap-3 cursor-pointer group z-50">
+            <div className="w-11 h-11 rounded-xl bg-blue-600 flex items-center justify-center relative overflow-hidden shadow-lg border border-blue-500/20 transition-transform duration-300 group-hover:scale-105">
+              <div className="w-4 h-4 bg-white rounded-sm relative z-10" />
+            </div>
+            <span className="font-black text-[24px] tracking-tight text-slate-900">ModernBank</span>
+          </div>
             </Link>
             <h1 className="text-3xl font-black tracking-tighter dark:text-white">Create Account</h1>
             <p className="text-muted-foreground font-medium text-sm">Start your journey toward financial freedom.</p>
@@ -179,6 +180,7 @@ export default function SignupPage() {
         </div>
       </div>
     </div>
+      </PublicRoute>
   );
 }
 
@@ -191,4 +193,5 @@ function BenefitItem({ text }: { text: string }) {
       <span className="text-sm font-bold tracking-tight">{text}</span>
     </div>
   );
+
 }

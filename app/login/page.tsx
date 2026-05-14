@@ -59,8 +59,13 @@ export default function LoginPage() {
           {/* Logo & Header */}
           <div className="space-y-3">
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="h-10 w-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black italic shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform">N</div>
-              <span className="text-2xl font-black tracking-tighter dark:text-white uppercase italic">NexusBank</span>
+                {/* Brand Logo */}
+          <div className="flex items-center gap-3 cursor-pointer group z-50">
+            <div className="w-11 h-11 rounded-xl bg-blue-600 flex items-center justify-center relative overflow-hidden shadow-lg border border-blue-500/20 transition-transform duration-300 group-hover:scale-105">
+              <div className="w-4 h-4 bg-white rounded-sm relative z-10" />
+            </div>
+            <span className="font-black text-[24px] tracking-tight text-slate-900">ModernBank</span>
+          </div>
             </Link>
             <h1 className="text-4xl font-black tracking-tighter dark:text-white leading-tight">
               Welcome back to <br /> 

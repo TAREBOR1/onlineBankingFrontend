@@ -98,8 +98,10 @@ export function Sidebar() {
           {/* Header Action (Fixed Height) */}
           <div className="flex-none mb-8 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold italic shadow-lg">N</div>
-              <span className="text-xl font-black tracking-tighter dark:text-white">NexusBank</span>
+               <div className="w-11 h-11 rounded-xl bg-blue-600 flex items-center justify-center relative overflow-hidden shadow-lg border border-blue-500/20 transition-transform duration-300 group-hover:scale-105">
+              <div className="w-4 h-4 bg-white rounded-sm relative z-10" />
+            </div>
+            <span className="font-black text-[24px] tracking-tight text-slate-900">ModernBank</span>
             </div>
             <Button variant="ghost" size="icon" className="rounded-xl" onClick={closeSidebar}>
               <PanelLeftClose className="h-5 w-5 text-muted-foreground" />
